@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Nuxt.js",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "nvm use \n pnpm i \n pnpm dev",
+      "cwd": "${workspaceFolder}",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}

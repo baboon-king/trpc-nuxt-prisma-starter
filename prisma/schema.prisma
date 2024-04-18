@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Scheme {
+  id                  String               @id @default(cuid())
+  title               String
+  subTitle            String
+  backgroundTheme     String
+  mainImage           String
+  tags                Tag[]
+  themes              SchemeTheme[]
+  suitableAudiences   SuitableAudience[]
+  suitableDepartments SuitableDepartment[]
+  purchases           Purchase[]
+  zan                 Int                  @default(0)
+  star                Int                  @default(0)
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  published           Boolean              @default(true)
+  free                Boolean              @default(true)
+  price               Decimal?
+  initial             String               @default("#")
+  sortLevel           Int                  @default(autoincrement())
+  resource            String               @default("")
+  detail              Json
+  enjoyAddress        String               @default("")
+}
+
+model Tag {
+  id         String   @id @default(cuid())
+  name       String
+  color      String
+  background String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  published  Boolean  @default(true)
+  sortLevel  Int      @default(autoincrement())
+  schemes    Scheme[]
+}
+
+model SchemeTheme {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(true)
+  sortLevel Int      @default(autoincrement())
+  schemes   Scheme[]
+}
+
+model SuitableAudience {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(true)
+  sortLevel Int      @default(autoincrement())
+  schemes   Scheme[]
+}
+
+model SuitableDepartment {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(true)
+  sortLevel Int      @default(autoincrement())
+  schemes   Scheme[]
+}
+
+model Swiper {
+  id        String   @id @default(cuid())
+  image     String
+  title     String
+  subTitle  String
+  btnText   String
+  target    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(true)
+  sortLevel Int      @default(autoincrement())
+}
+
+model Area {
+  id        String     @id @default(cuid())
+  name      String
+  code      Int        @unique
+  purchases Purchase[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  published Boolean    @default(true)
+  sortLevel Int        @default(autoincrement())
+}
+
+model Purchase {
+  id        String   @id @default(cuid())
+  address   String
+  name      String
+  area      Area?    @relation(fields: [areaId], references: [id])
+  areaId    String?
+  scheme    Scheme?  @relation(fields: [schemeId], references: [id])
+  schemeId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(true)
+  sortLevel Int      @default(autoincrement())
+}

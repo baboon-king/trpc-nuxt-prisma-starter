@@ -1,0 +1,48 @@
+version: "3.1"
+
+services:
+  db:
+    image: postgres:15.3-alpine3.18
+    container_name: db
+    restart: always
+    platform: linux/amd64
+    networks:
+      - trpc_nuxt_prisma_starter_net
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "johndoe"
+      POSTGRES_PASSWORD: "LAaiVZ3xwKkR"
+    volumes:
+      - "./.volumes/db:/var/lib/postgresql/data"
+
+  nuxt:
+    image: nuxt
+    container_name: nuxt
+    platform: linux/amd64
+    networks:
+      - trpc_nuxt_prisma_starter_net
+    restart: always
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://johndoe:LAaiVZ3xwKkR@172.17.0.2:5432/trpc_nuxt_prisma_starter?schema=public"
+      AUTH_ORIGIN: "http://localhost:3000"
+      NUXT_HOST: "http://localhost:3000"
+      NITRO_PORT: 3000
+      NEXTAUTH_URL: "http://localhost:3000"
+      AUTH_SECRET: "MoYvopp9A84V"
+      IdentityServer4_Issuer: "http://xxx.aaaa.com:4500"
+      IdentityServer4_CLIENT_ID: "SINTHTT1112323232CODE"
+      IdentityServer4_CLIENT_SECRET: "SGTSKT-h6g8-7eba-1d18323232a"
+    volumes:
+      - "./.volumes/nuxt/resource:/app/resource"
+      - "./.volumes/nuxt/files:/app/files"
+
+networks:
+  trpc_nuxt_prisma_starter_net:

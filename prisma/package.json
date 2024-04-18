@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "scripts": {
+    "postinstall": "prisma generate",
+    "deploy:prod": "prisma migrate deploy && node server/index.mjs",
+    "db:seed": "prisma db seed"
+  },
+  "dependencies": {
+    "@prisma/client": "5.0.0",
+    "prisma": "5.0.0",
+    "tsx": "3.12.7"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
+}
