@@ -1,5 +1,5 @@
 <template>
-  <wangeditor-preview :content="contentRef" @change="change" />
+  <wangeditor-write :content="contentRef" @change="change" />
 </template>
 
 <script setup lang="ts">
@@ -9,8 +9,8 @@ import Editor from "./editor.ce.vue";
 
 const Element = defineCustomElement(Editor);
 
-if (!customElements.get("wangeditor-preview")) {
-  customElements.define("wangeditor-preview", Element);
+if (!customElements.get("wangeditor-write")) {
+  customElements.define("wangeditor-write", Element);
 }
 
 const props = defineProps(["content"]);
